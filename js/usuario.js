@@ -64,19 +64,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     const role = response.data.role.trim().toLowerCase();
                     switch(role) {
                         case 'admin':
-                            window.location.href = './html/admin.html';
+                            window.location.href = 'html/admin.html';
                             break;
                         case 'estudiante':
-                            window.location.href = './html/estudiantes.html';
+                            window.location.href = 'html/estudiantes.html';
                             break;
                         case 'estudiante2':
-                            window.location.href = './html/estudiantes2.html';
+                            window.location.href = 'html/estudiantes2.html';
                             break;
                         case 'enfermeria':
-                            window.location.href = './html/enfermeria.html';
+                            window.location.href = 'html/enfermeria.html';
                             break;
                         case 'psicologo':
-                            window.location.href = './html/psicologos.html';
+                            window.location.href = 'html/psicologos.html';
                             break;
                         default:
                             showMessage('Rol no reconocido. Contacte al administrador.', 'warning');
