@@ -1,0 +1,143 @@
+
+/* Estilos responsive globales para todas las páginas */
+@media (max-width: 576px) {
+  /* Ajustes generales */
+  body {
+    padding: 10px !important;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-size: 1.2rem !important;
+  }
+  
+  .container, .content-item, .container-fluid, .card-body {
+    padding: 1rem !important;
+  }
+  
+  /* Botones */
+  .btn, .cta {
+    font-size: 0.9rem !important;
+    padding: 0.5rem 1rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  /* Tablas */
+  table th, table td {
+    font-size: 0.9rem !important;
+    padding: 8px 10px !important;
+  }
+  
+  /* Navegación */
+  nav ul {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+  
+  nav ul li {
+    width: 100% !important;
+    text-align: center !important;
+  }
+  
+  nav ul li a {
+    width: 100% !important;
+    display: block !important;
+  }
+  
+  /* Formularios */
+  .form-group, .mb-3 {
+    margin-bottom: 1rem !important;
+  }
+  
+  input, select, textarea {
+    font-size: 0.9rem !important;
+    padding: 0.75rem !important;
+  }
+  
+  /* Layouts especiales */
+  .row {
+    margin: 0 !important;
+  }
+  
+  .col-md-6, .col-md-12 {
+    padding: 0 !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    min-height: auto !important;
+    padding: 15px 0 !important;
+  }
+  
+  /* Videos */
+  iframe {
+    height: 180px !important;
+  }
+  
+  .video-container {
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Cards */
+  .card {
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Contenedores específicos */
+  .button-group {
+    flex-direction: column !important;
+  }
+  
+  .button-group .btn {
+    width: 100% !important;
+  }
+  
+  /* Ajustes para formulario de enfermería */
+  #recomendacionForm .row, #recomendacionPsicologiaForm .row {
+    margin: 0 !important;
+  }
+  
+  /* Ajustes para tablas de recomendaciones */
+  #recomendaciones-table {
+    font-size: 0.8rem !important;
+  }
+  
+  /* Ajustes para el portal de psicología */
+  #dataTable_wrapper {
+    overflow-x: auto !important;
+  }
+  
+  /* Ajustes para gráficos */
+  #report-form {
+    text-align: center !important;
+  }
+  
+  /* Ajustes para mensajes de respuesta */
+  #response, #responseMessage, #responseMessagePsicologia {
+    font-size: 0.9rem !important;
+    padding: 0.75rem !important;
+  }
+  
+  /* Ajustes para iconos */
+  .fas, .far, .fab {
+    font-size: 1rem !important;
+  }
+  
+  /* Ajustes para el título de bienestar */
+  header h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  /* Ajustes para el sidebar de bienestar */
+  .sidebar .nav-link {
+    padding: 10px 15px !important;
+    margin: 3px 0 !important;
+  }
+  
+  /* Ajustes para listas */
+  ul.lista1 li, ul.lista2 li, ul.lista3 li {
+    padding-left: 25px !important;
+    font-size: 0.9rem !important;
+  }
+}
