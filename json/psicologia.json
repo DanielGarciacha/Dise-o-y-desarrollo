@@ -1,0 +1,12 @@
+{
+    "users": [
+        {
+            "name": "Psicólogo1",
+            "role": "psicologo"
+        },
+        {
+            "name": "Psicólogo2",
+            "role": "psicologo"
+        }
+    ]
+}

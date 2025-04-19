@@ -1,0 +1,12 @@
+{
+    "users": [
+        {
+            "name": "Enfermería1",
+            "role": "enfermeria"
+        },
+        {
+            "name": "Enfermería2",
+            "role": "enfermeria"
+        }
+    ]
+}

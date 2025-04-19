@@ -1,0 +1,12 @@
+{
+    "users": [
+        {
+            "name": "Estudiante1",
+            "role": "estudiante"
+        },
+        {
+            "name": "Estudiante2",
+            "role": "estudiante"
+        }
+    ]
+}
