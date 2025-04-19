@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información de Bienestar Universitario</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+    
+    /* Bordes personalizados para cada actividad */
+    .card-futbol {
+        border-top: 4px solid #0ea5e9 !important; 
+    }
+    
+    .card-taekwondo {
+        border-top: 4px solid #10b981 !important; 
+    }
+    
+    .card-baloncesto {
+        border-top: 4px solid #f59e0b !important; 
+    }
+    
+    .card-danza {
+        border-top: 4px solid #f472b6 !important; 
+    }
+    
+    .card-musica {
+        border-top: 4px solid #8b5cf6 !important; 
+    }
+    
+    .card-natacion {
+        border-top: 4px solid #06b6d4 !important; 
+    }
+    
+    /* Asegurar que las tarjetas mantengan el borde redondeado */
+    .activity-card {
+        border-radius: 10px !important;
+        border-top-left-radius: 10px !important;
+        border-top-right-radius: 10px !important;
+    }
+
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --secondary: #10b981;
+            --accent: #f472b6;
+            --light: #ecfeff;
+            --dark: #111827;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            font-size: 2.2rem;
+        }
+
+        .intro-text {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            padding: 0 15px;
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .activity-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .activity-card .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .activity-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .activity-card .card-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        .activity-card .card-text {
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-activity {
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-bottom: none;
+        }
+
+        .modal-title {
+            font-weight: 600;
+        }
+
+        .modal-body ul {
+            padding-left: 20px;
+        }
+
+        .modal-body li {
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .intro-text {
+                font-size: 1rem;
+            }
+            
+            .activity-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><i class="fas fa-heartbeat"></i> Actividades Deportivas y Recreativas</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="intro-text">
+            <p>
+                En esta página podrás encontrar información sobre los diferentes deportes y actividades recreativas que ofrece nuestra universidad. 
+                Conoce los requisitos necesarios para participar en cada una de estas actividades y únete a nuestra comunidad estudiantil.
+            </p>
+        </div>
+
+        <div class="row">
+            <!-- Fútbol -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card activity-card">
+                    <img src="../img/futbol.jpg" class="card-img-top" alt="Equipo de fútbol">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-futbol"></i> Fútbol</h5>
+                        <p class="card-text">Únete a nuestro equipo de fútbol y participa en los torneos interuniversitarios. Entrenamientos tres veces por semana.</p>
+                        <button type="button" class="btn btn-primary btn-activity" data-toggle="modal" data-target="#modalFutbol">
+                            Ver requisitos
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Taekwondo -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card activity-card">
+                    <img src="../img/Taekwondo.avif" class="card-img-top" alt="Practicando Taekwondo">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-user-ninja"></i> Taekwondo</h5>
+                        <p class="card-text">Aprende artes marciales, mejora tu disciplina y condición física con nuestros instructores certificados.</p>
+                        <button type="button" class="btn btn-secondary btn-activity" data-toggle="modal" data-target="#modalTaekwondo">
+                            Ver requisitos
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Baloncesto -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card activity-card">
+                    <img src="../img/Baloncesto.webp" class="card-img-top" alt="Equipo de baloncesto">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-basketball-ball"></i> Baloncesto</h5>
+                        <p class="card-text">Forma parte de nuestro equipo de baloncesto y compite en los torneos regionales universitarios.</p>
+                        <button type="button" class="btn btn-success btn-activity" data-toggle="modal" data-target="#modalBaloncesto">
+                            Ver requisitos
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danza -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card activity-card">
+                    <img src="../img/Danza.jpg" class="card-img-top" alt="Grupo de danza">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-music"></i> Danza</h5>
+                        <p class="card-text">Expresa tu arte a través del movimiento. Ofrecemos clases de diferentes estilos de danza.</p>
+                        <button type="button" class="btn btn-danger btn-activity" data-toggle="modal" data-target="#modalDanza">
+                            Ver requisitos
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Música -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card activity-card">
+                    <img src="../img/instrumentos.jpg" class="card-img-top" alt="Instrumentos musicales">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-guitar"></i> Música</h5>
+                        <p class="card-text">Aprende a tocar un instrumento o forma parte de nuestra banda universitaria.</p>
+                        <button type="button" class="btn btn-warning btn-activity" data-toggle="modal" data-target="#modalMusica">
+                            Ver requisitos
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Natación -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card activity-card">
+                    <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Clase de natación">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-swimmer"></i> Natación</h5>
+                        <p class="card-text">Clases para todos los niveles, desde principiantes hasta competencia.</p>
+                        <button type="button" class="btn btn-info btn-activity" data-toggle="modal" data-target="#modalNatacion">
+                            Ver requisitos
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Modal Fútbol -->
+    <div class="modal fade" id="modalFutbol" tabindex="-1" role="dialog" aria-labelledby="modalFutbolTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalFutbolTitle">Requisitos para Fútbol</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li><strong>Nombre completo</strong> (según documento de identidad)</li>
+                        <li><strong>Número de documento</strong> (C.C. o T.I.)</li>
+                        <li><strong>Programa académico</strong> que estás cursando</li>
+                        <li><strong>Cuatrimestre actual</strong></li>
+                        <li><strong>Certificado médico</strong> de aptitud física (vigente)</li>
+                        <li><strong>Seguro estudiantil</strong> activo</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Taekwondo -->
+    <div class="modal fade" id="modalTaekwondo" tabindex="-1" role="dialog" aria-labelledby="modalTaekwondoTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTaekwondoTitle">Requisitos para Taekwondo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li><strong>Nombre completo</strong> (según documento de identidad)</li>
+                        <li><strong>Número de documento</strong> (C.C. o T.I.)</li>
+                        <li><strong>Programa académico</strong> que estás cursando</li>
+                        <li><strong>Cuatrimestre actual</strong></li>
+                        <li><strong>Certificado médico</strong> de aptitud física (vigente)</li>
+                        <li><strong>Seguro estudiantil</strong> activo</li>
+                        <li><strong>Uniforme blanco</strong> (dobok) para prácticas</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Baloncesto -->
+    <div class="modal fade" id="modalBaloncesto" tabindex="-1" role="dialog" aria-labelledby="modalBaloncestoTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalBaloncestoTitle">Requisitos para Baloncesto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li><strong>Nombre completo</strong> (según documento de identidad)</li>
+                        <li><strong>Número de documento</strong> (C.C. o T.I.)</li>
+                        <li><strong>Programa académico</strong> que estás cursando</li>
+                        <li><strong>Cuatrimestre actual</strong></li>
+                        <li><strong>Certificado médico</strong> de aptitud física (vigente)</li>
+                        <li><strong>Seguro estudiantil</strong> activo</li>
+                        <li><strong>Tenis deportivos</strong> adecuados para cancha</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Danza -->
+    <div class="modal fade" id="modalDanza" tabindex="-1" role="dialog" aria-labelledby="modalDanzaTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalDanzaTitle">Requisitos para Danza</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li><strong>Nombre completo</strong> (según documento de identidad)</li>
+                        <li><strong>Número de documento</strong> (C.C. o T.I.)</li>
+                        <li><strong>Programa académico</strong> que estás cursando</li>
+                        <li><strong>Cuatrimestre actual</strong></li>
+                        <li><strong>Ropa adecuada</strong> para prácticas (leotardos, mallas, etc.)</li>
+                        <li><strong>Zapatos de danza</strong> según el estilo elegido</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Música -->
+    <div class="modal fade" id="modalMusica" tabindex="-1" role="dialog" aria-labelledby="modalMusicaTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalMusicaTitle">Requisitos para Música</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li><strong>Nombre completo</strong> (según documento de identidad)</li>
+                        <li><strong>Número de documento</strong> (C.C. o T.I.)</li>
+                        <li><strong>Programa académico</strong> que estás cursando</li>
+                        <li><strong>Cuatrimestre actual</strong></li>
+                        <li><strong>Instrumento propio</strong> (opcional, la universidad provee algunos)</li>
+                        <li><strong>Conocimientos previos</strong> (si aplica)</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Natación -->
+    <div class="modal fade" id="modalNatacion" tabindex="-1" role="dialog" aria-labelledby="modalNatacionTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalNatacionTitle">Requisitos para Natación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li><strong>Nombre completo</strong> (según documento de identidad)</li>
+                        <li><strong>Número de documento</strong> (C.C. o T.I.)</li>
+                        <li><strong>Programa académico</strong> que estás cursando</li>
+                        <li><strong>Cuatrimestre actual</strong></li>
+                        <li><strong>Certificado médico</strong> de aptitud física (vigente)</li>
+                        <li><strong>Traje de baño adecuado</strong></li>
+                        <li><strong>Gorra y gafas de natación</strong> (recomendado)</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p class="mb-0">&copy; 2024 Bienestar Universitario - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

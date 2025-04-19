@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendaciones para Estudiante</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/recom_estudiante1.js" defer></script>
+    <style>
+        :root {
+            --primary-color: #28a745;
+            --primary-dark: #1e7e34;
+            --secondary-color: #f0f7f4;
+            --accent-color: #218838;
+            --text-color: #333;
+            --light-color: #fff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+            color: var(--light-color);
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+        }
+        
+        header h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        main {
+            flex-grow: 1;
+            padding: 2rem 0;
+        }
+        
+        section {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
+        
+        h2 {
+            color: var(--primary-dark);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table thead th {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            font-weight: 600;
+            border-bottom: none;
+        }
+        
+        .table tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+        
+        .table tbody tr:hover {
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+        
+        footer {
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+            color: var(--light-color);
+            padding: 1.5rem 0;
+            margin-top: auto;
+        }
+        
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .badge {
+            padding: 0.5rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 500;
+        }
+        
+        .badge-psychology {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .badge-nursing {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .table-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .empty-state {
+            padding: 3rem;
+            text-align: center;
+            color: #6c757d;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header class="text-center py-4">
+        <div class="container">
+            <h1><i class="fas fa-user-graduate me-2"></i>Recomendaciones para Daniel</h1>
+            <nav>
+                <ul class="nav justify-content-center">
+                    <li class="nav-item"><a class="nav-link text-white" href="bienestar.html"><i class="fas fa-heart me-1"></i>Bienestar</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../index.html"><i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../html/estudiantes.html"><i class="fas fa-home me-1"></i>Página de inicio</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="flex-grow-1">
+        <section class="container my-4 fade-in">
+            <h2><i class="fas fa-clipboard-list me-2"></i>Recomendaciones</h2>
+            <div class="table-responsive">
+                <table id="recomendaciones-table" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-tag me-2"></i>Tipo de Recomendación</th>
+                            <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                            <th><i class="fas fa-comment-medical me-2"></i>Recomendación</th>
+                            <th><i class="fas fa-calendar-alt me-2"></i>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Datos dinámicos -->
+                    </tbody>
+                </table>
+                <div id="empty-state" class="empty-state d-none">
+                    <i class="fas fa-clipboard"></i>
+                    <p>No hay recomendaciones disponibles actualmente.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="text-center py-3">
+        <div class="container">
+            <p>&copy; 2024 Sitio Web de Bienestar Universitario. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Script para mostrar el estado vacío si no hay datos
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.getElementById('recomendaciones-table');
+            const emptyState = document.getElementById('empty-state');
+            
+            // Verificar si hay filas en la tabla (excepto el encabezado)
+            if (table.rows.length <= 1) {
+                emptyState.classList.remove('d-none');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienestar Universitario</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS personalizado -->
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .sidebar {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            min-height: 100vh;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .sidebar .nav-link.active {
+            font-weight: 600;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        h3 {
+            color: var(--dark);
+            font-weight: 600;
+            margin: 25px 0 15px;
+        }
+        
+        ul.lista1, ul.lista2, ul.lista3 {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        ul.lista1 li, ul.lista2 li, ul.lista3 li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        ul.lista1 li:before {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--secondary);
+            position: absolute;
+            left: 0;
+        }
+        
+        ul.lista2 li:before {
+            content: '\f0f1';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--success);
+            position: absolute;
+            left: 0;
+        }
+        
+        ul.lista3 li:before {
+            content: '\f44b';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+        }
+        
+        .btn-outline-success {
+            border-color: var(--success);
+            color: var(--success);
+        }
+        
+        .btn-outline-success:hover {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .cta {
+            position: relative;
+            margin: 20px 0;
+            padding: 12px 30px;
+            transition: all 0.3s;
+            border: none;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            overflow: hidden;
+            font-weight: 500;
+        }
+        
+        .cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .video-container {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .video-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .center-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                min-height: auto;
+                padding: 15px 0;
+            }
+            
+            .content-item {
+                padding: 20px;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Barra Lateral -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-content="psicologia">
+                                <i class="fas fa-brain"></i> Desarrollo Humano
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-content="enfermeria">
+                                <i class="fas fa-heartbeat"></i> Salud Integral
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-content="recreaccion">
+                                <i class="fas fa-running"></i> Recreación y Deportes
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Contenido Principal -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+                <div id="psicologia" class="content-item">
+                    <h2><i class="fas fa-brain me-2"></i>Desarrollo Humano</h2>
+                    <p class="lead">Actividades formativas para la construcción de estilos de vida saludables, desarrollo personal y profesional.</p>
+                    
+                    <h3><i class="fas fa-tasks me-2"></i>Actividades y servicios</h3>
+                    <ul class="lista1">
+                        <li>Asesorías psicológicas individuales y grupales</li>
+                        <li>Talleres de proyecto de vida y desarrollo personal</li>
+                        <li>Formación en las dimensiones del ser</li>
+                        <li>Cátedras de formación profesional</li>
+                        <li>Jornadas de inducción e integración</li>
+                        <li>Programas de bienestar laboral</li>
+                        <li>Estrategias de inclusión institucional</li>
+                    </ul>
+                    
+                    <button type="button" class="btn btn-outline-success btn-lg mt-3" onclick="window.location.href='formpsi.html'">
+                        <i class="fas fa-file-alt me-2"></i>Formulario de Desarrollo Humano
+                    </button>
+                </div>
+                
+                <div id="enfermeria" class="content-item d-none">
+                    <h2><i class="fas fa-heartbeat me-2"></i>Salud Integral y Calidad de Vida</h2>
+                    <p class="lead">Promoción de hábitos saludables, prevención de enfermedades y atención primaria en salud.</p>
+                    
+                    <h3><i class="fas fa-clipboard-list me-2"></i>Actividades y servicios</h3>
+                    <ul class="lista2">
+                        <li>Atención médica y de enfermería prioritaria</li>
+                        <li>Consultas médicas externas y asesorías</li>
+                        <li>Evaluación nutricional y hábitos alimenticios</li>
+                        <li>Talleres de vida saludable</li>
+                        <li>Jornadas de promoción de la salud</li>
+                        <li>Cobertura de seguros contra accidentes</li>
+                        <li>Educación en salud sexual y reproductiva</li>
+                        <li>Gestión de incapacidades médicas</li>
+                        <li>Programas de prevención en salud</li>
+                        <li>Seguimiento a deportistas y artistas</li>
+                    </ul>
+                    
+                    <button type="button" class="btn btn-outline-success btn-lg mt-3" onclick="window.location.href='FORMED.html'">
+                        <i class="fas fa-file-medical me-2"></i>Formulario de Salud Integral
+                    </button>
+                </div>
+                
+                <div id="recreaccion" class="content-item d-none">
+                    <h2><i class="fas fa-running me-2"></i>Recreación y Deportes</h2>
+                    <p class="lead">Actividades para el desarrollo físico, uso del tiempo libre y promoción de la salud a través del deporte.</p>
+                    
+                    <h3><i class="fas fa-medal me-2"></i>Actividades y servicios</h3>
+                    <ul class="lista3">
+                        <li>Formación en disciplinas deportivas institucionales</li>
+                        <li>Torneos recreativos para toda la comunidad universitaria</li>
+                        <li>Actividades alternativas para el cuidado corporal</li>
+                        <li>Eventos recreativos y de integración</li>
+                        <li>Representación en competencias externas</li>
+                    </ul>
+                    
+                    <div class="center-button">
+                        <button class="cta" onclick="window.location.href='bienestarinfo.html'">
+                            <span class="me-2">Más información</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('.nav-link[data-content]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remover active de todos los links
+                document.querySelectorAll('.nav-link').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Agregar active al link clickeado
+                this.classList.add('active');
+                
+                // Ocultar todos los content-items
+                document.querySelectorAll('.content-item').forEach(item => {
+                    item.classList.add('d-none');
+                });
+                
+                // Mostrar el content-item correspondiente
+                document.getElementById(this.getAttribute('data-content')).classList.remove('d-none');
+            });
+        });
+    </script>
+</body>
+</html>
