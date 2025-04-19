@@ -145,7 +145,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-    // Redirigir después de 2 segundos
-    setTimeout(() => {
-        window.location.href = 'bienestar.html';
-    }, 2000);
