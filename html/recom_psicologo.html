@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Recomendación para Psicología</title>
+    <script src="../js/recom_psicologia.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #4cc9f0;
+            --error-color: #f72585;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        
+        .container {
+            max-width: 900px;
+        }
+        
+        .card {
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: none;
+            overflow: hidden;
+            transform: translateY(0);
+            transition: all 0.5s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            font-weight: bold;
+            font-size: 1.3rem;
+            padding: 20px;
+            border-bottom: none;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .card-title {
+            color: #4a4a4a;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary-color);
+            padding-left: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .card-body {
+            padding: 30px;
+            background-color: white;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-control {
+            border-radius: 12px;
+            padding: 12px 15px;
+            border: 1px solid #dce1e8;
+            transition: all 0.3s;
+            background-color: #f8f9fa;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+            background-color: white;
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            transform: scale(0);
+            border-radius: 50%;
+        }
+        
+        .btn:active::after {
+            transform: scale(2);
+        }
+        
+        .btn-outline-success {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background-color: transparent;
+        }
+        
+        .btn-outline-success:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-dark {
+            background-color: var(--dark-color);
+            border-color: var(--dark-color);
+        }
+        
+        .btn-dark:hover {
+            background-color: #23272b;
+            border-color: #23272b;
+            box-shadow: 0 4px 15px rgba(52, 58, 64, 0.4);
+        }
+        
+        .alert {
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            position: relative;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: none;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background-color: rgba(76, 201, 240, 0.2);
+            color: #0077b6;
+            border-left: 5px solid var(--success-color);
+        }
+        
+        .alert-error {
+            background-color: rgba(247, 37, 133, 0.2);
+            color: #d90429;
+            border-left: 5px solid var(--error-color);
+        }
+        
+        .alert i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .input-group-text {
+            border-radius: 12px 0 0 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        
+        .input-group .form-control {
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .animate__animated {
+            animation-duration: 0.8s;
+        }
+        
+        .loading-spinner {
+            display: none;
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        .loading-spinner i {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card mt-5 mb-5 animate__animated animate__fadeIn">
+            <div class="card-header">
+                <i class="fas fa-brain"></i> Registrar Recomendación para Psicología
+            </div>
+            <div class="card-body">
+                <h5 class="card-title animate__animated animate__fadeInLeft">Por favor complete los siguientes datos:</h5>
+                <form id="recomendacionPsicologiaForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label for="id_psicologo" class="form-label">Documento del psicólogo</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-id-card"></i>
+                                </span>
+                                <input type="text" class="form-control" id="id_psicologo" placeholder="Ingrese número de documento" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="id_estudiante" class="form-label">Documento del estudiante</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-user-graduate"></i>
+                                </span>
+                                <input type="text" class="form-control" id="id_estudiante" placeholder="Ingrese número de documento" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="fecha_recomendacion" class="form-label">Fecha de Recomendación</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                                <input type="date" class="form-control" id="fecha_recomendacion" name="fecha_recomendacion" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-4">
+                            <label for="recomendacion" class="form-label">Recomendación</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-comment-medical"></i>
+                                </span>
+                                <textarea class="form-control" id="recomendacion" name="recomendacion" placeholder="Detalle aquí su recomendación para el estudiante..." rows="4" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="submit" class="btn btn-outline-success">
+                            <i class="fas fa-save me-2"></i> Registrar
+                        </button>
+                        <button type="button" class="btn btn-dark" onclick="window.location.href='psicologos.html'">
+                            <i class="fas fa-arrow-left me-2"></i> Volver a psicología
+                        </button>
+                    </div>
+                    
+                    <div class="loading-spinner" id="loadingSpinner">
+                        <i class="fas fa-circle-notch fa-spin"></i>
+                        <p>Procesando la recomendación...</p>
+                    </div>
+                    
+                    <div id="successAlert" class="alert alert-success animate__animated animate__fadeIn" style="display: none;">
+                        <i class="fas fa-check-circle"></i> <span id="successMessage"></span>
+                    </div>
+                    
+                    <div id="errorAlert" class="alert alert-error animate__animated animate__fadeIn" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i> <span id="errorMessage"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

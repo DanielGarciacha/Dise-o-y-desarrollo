@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendaciones para Estudiante</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/recom_estudiante2.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-weight: 700;
+            font-size: 2.2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            margin: 0 0.3rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .nav-link i {
+            margin-right: 5px;
+        }
+        
+        main {
+            flex-grow: 1;
+            padding: 2rem 0;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #20c997, #28a745);
+            color: white;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            border-bottom: none;
+        }
+        
+        .table {
+            margin-bottom: 0;
+        }
+        
+        .table th {
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-weight: 600;
+            border-top: none;
+            padding: 1rem;
+        }
+        
+        .table td {
+            vertical-align: middle;
+            padding: 1rem;
+        }
+        
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(32, 201, 151, 0.05);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            padding: 1.5rem 0;
+            color: white;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            border-radius: 2px;
+        }
+        
+        .empty-state {
+            padding: 3rem;
+            text-align: center;
+            color: #6c757d;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #20c997;
+        }
+    </style>
+</head>
+<body>
+    <header class="text-white text-center py-3">
+        <div class="container">
+            <h1><i class="fas fa-lightbulb"></i> Recomendaciones para Vanesa</h1>
+            <nav>
+                <ul class="nav justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="bienestar.html">
+                            <i class="fas fa-heart"></i> Bienestar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="../html/estudiantes2.html">
+                            <i class="fas fa-home"></i> Página de inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="../index.html">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="flex-grow-1">
+        <div class="container my-4">
+            <h2 class="page-title">Tus Recomendaciones Personalizadas</h2>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-list-alt me-2"></i> Listado de Recomendaciones
+                </div>
+                <div class="card-body p-0">
+                    <table id="recomendaciones-table" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-tag me-2"></i> Tipo</th>
+                                <th><i class="fas fa-hashtag me-2"></i> ID</th>
+                                <th><i class="fas fa-comment-dots me-2"></i> Recomendación</th>
+                                <th><i class="fas fa-calendar-alt me-2"></i> Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Filas de datos se cargarán aquí dinámicamente -->
+                        </tbody>
+                    </table>
+                    <div id="empty-state" class="empty-state d-none">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h4>No hay recomendaciones disponibles</h4>
+                        <p>Cuando recibas recomendaciones, aparecerán aquí.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="text-white text-center py-3">
+        <div class="container">
+            <p><i class="far fa-copyright me-2"></i> 2024 Sitio Web. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Función para mostrar el estado vacío si no hay recomendaciones
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkEmptyTable = function() {
+                const tbody = document.querySelector('#recomendaciones-table tbody');
+                const emptyState = document.getElementById('empty-state');
+                if (tbody.children.length === 0) {
+                    document.querySelector('#recomendaciones-table').classList.add('d-none');
+                    emptyState.classList.remove('d-none');
+                } else {
+                    document.querySelector('#recomendaciones-table').classList.remove('d-none');
+                    emptyState.classList.add('d-none');
+                }
+            };
+            
+            // Ejecutar la verificación después de que se carguen los datos
+            setTimeout(checkEmptyTable, 1000);
+        });
+    </script>
+</body>
+</html>

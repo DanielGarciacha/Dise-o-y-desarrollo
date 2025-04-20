@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        
+        @media (max-width: 576px) {
+  h1, h2, h3 {
+    font-size: 1.2rem;
+  }
+
+  .container, .content-item, .container-fluid {
+    padding: 1rem !important;
+  }
+
+  .btn, .cta {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+
+  table th, table td {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+
+  nav ul {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px;
+  }
+
+  iframe {
+    height: 180px !important;
+  }
+
+  .video-container {
+    margin-bottom: 1rem;
+  }
+}
+
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --danger-color: #f72585;
+            --success-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        /* Header Estilizado */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        #usernameDisplay {
+            color: var(--success-color);
+            font-weight: 700;
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-link i {
+            font-size: 1.1rem;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Pestañas Estilizadas */
+        .tabs-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .tabs-header {
+            display: flex;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .tabs-header::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-button {
+            padding: 1rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .tab-button:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-button.active {
+            color: white;
+            font-weight: 600;
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background-color: var(--success-color);
+            border-radius: 3px 3px 0 0;
+        }
+
+        /* Contenido de Pestañas */
+        .tab-content {
+            padding: 2rem;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilos para la pestaña de Inicio */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .card p {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .chart-container h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        /* Estilos para la tabla de usuarios */
+        .table-container {
+            overflow-x: auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f3ff;
+        }
+
+        .action-btn {
+            padding: 0.5rem 0.8rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .edit-btn {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: var(--danger-color);
+            color: white;
+            margin-left: 0.5rem;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Estilos para formularios */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #d11466;
+            transform: translateY(-2px);
+        }
+
+        #formResult, #updateResult, #deleteResult {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .nav {
+                gap: 0.8rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .tab-button {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .tab-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+}
+    </style>
+    <!-- Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Archivos JS -->
+    <script src="../js/graficos.js" defer></script>
+    <script src="../js/admin.js" defer></script>
+    <script src="../js/reportes.js" defer></script>
+</head>
+<body>
+    <!-- Barra Superior Premium -->
+    <header>
+        <div class="header-content">
+            <h1>Bienvenido, <span id="usernameDisplay">Administrador</span> <i class="fas fa-crown"></i></h1>
+            <nav>
+                <ul class="nav">
+                    <li><a class="nav-link" href="../index.html"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                    <li><a class="nav-link pulse" href="#" id="downloadReportBtn"><i class="fas fa-file-download"></i> Descargar Reporte</a></li>
+                    <li><a class="nav-link pulse" href="#" id="downloadCitasBtn"><i class="fas fa-file-excel"></i> Reporte Citas</a></li>
+
+                            <li><a class="nav-link pulse" href="#" id="downloadRecsBtn"><i class="fas fa-file-excel"></i> Reporte Recomendaciones</a></li>
+                    <!-- En la sección del header, reemplaza el botón de descarga existente con estos dos: -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Contenido Principal -->
+    <main class="container">
+        <div class="tabs-container">
+            <div class="tabs-header">
+                <button class="tab-button active" data-tab="home"><i class="fas fa-home"></i> Inicio</button>
+                <button class="tab-button" data-tab="userList"><i class="fas fa-users"></i> Usuarios</button>
+                <button class="tab-button" data-tab="addUser"><i class="fas fa-user-plus"></i> Agregar</button>
+                <button class="tab-button" data-tab="updateUser"><i class="fas fa-user-edit"></i> Actualizar</button>
+                <button class="tab-button" data-tab="deleteUser"><i class="fas fa-user-minus"></i> Eliminar</button>
+            </div>
+
+            <div class="tab-content">
+                <!-- Pestaña de Inicio -->
+                <div class="tab-pane active" id="home">
+                    <div class="dashboard-cards">
+                        <div class="card">
+                            <h3><i class="fas fa-users"></i> Usuarios Totales</h3>
+                            <p id="userCount">0</p>
+                        </div>
+                        <div class="card">
+                            <h3><i class="fas fa-calendar-check"></i> Total de Citas</h3>
+                            <p id="totalCitas">Cargando...</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h2><i class="fas fa-chart-bar"></i> Gráfico de Usuarios Registrados</h2>
+                        <div class="chart-wrapper">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h2><i class="fas fa-clipboard-list"></i> Gráfico de Citas</h2>
+                        <div class="chart-wrapper">
+                            <canvas id="combinedChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pestaña de Lista de Usuarios -->
+                <div class="tab-pane" id="userList">
+                    <div class="table-container">
+                        <h2><i class="fas fa-list"></i> Lista de Usuarios</h2>
+                        <table id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Identificación</th>
+                                    <th>Correo</th>
+                                    <th>Teléfono</th>
+                                    <th>Usuario</th>
+                                    <th>Rol</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Las filas se llenarán con JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pestaña de Agregar Usuario -->
+                <div class="tab-pane" id="addUser">
+                    <div class="form-container">
+                        <h2><i class="fas fa-user-plus"></i> Agregar Usuario</h2>
+                        <form id="userForm">
+                            <div class="form-group">
+                                <label for="nombre">Nombre Completo</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="identificacion">Identificación</label>
+                                <input type="text" class="form-control" id="identificacion" name="identificacion" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="correo">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="correo" name="correo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Nombre de Usuario</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Contraseña</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="rol">Rol:</label>
+                                <input type="text" class="form-control" id="rol" name="rol" required>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar Usuario</button>
+                        </form>
+                        <div id="formResult"></div>
+                    </div>
+                </div>
+
+                <!-- Pestaña de Actualizar Usuario -->
+                <div class="tab-pane" id="updateUser">
+                    <div class="form-container">
+                        <h2><i class="fas fa-user-edit"></i> Actualizar Usuario</h2>
+                        <form id="updateForm">
+                            <div class="form-group">
+                                <label for="updateId">ID del Usuario</label>
+                                <input type="text" class="form-control" id="updateId" name="id" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="updateNombre">Nombre Completo</label>
+                                <input type="text" class="form-control" id="updateNombre" name="nombre">
+                            </div>
+                            <div class="form-group">
+                                <label for="updateIdentificacion">Identificación</label>
+                                <input type="text" class="form-control" id="updateIdentificacion" name="identificacion">
+                            </div>
+                            <div class="form-group">
+                                <label for="updateCorreo">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="updateCorreo" name="correo">
+                            </div>
+                            <div class="form-group">
+                                <label for="updateTelefono">Teléfono</label>
+                                <input type="tel" class="form-control" id="updateTelefono" name="telefono">
+                            </div>
+                            <div class="form-group">
+                                <label for="updateUsername">Nombre de Usuario</label>
+                                <input type="text" class="form-control" id="updateUsername" name="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="updatePassword">Contraseña (dejar en blanco para no cambiar)</label>
+                                <input type="password" class="form-control" id="updatePassword" name="password">
+                            </div>
+                            <div class="form-group">
+                                <label for="rol">Rol:</label>
+                                <input type="text" class="form-control" id="rol" name="rol" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Actualizar</button>
+                        </form>
+                        <div id="updateResult"></div>
+                    </div>
+                </div>
+
+                <!-- Pestaña de Eliminar Usuario -->
+                <div class="tab-pane" id="deleteUser">
+                    <div class="form-container">
+                        <h2><i class="fas fa-user-minus"></i> Eliminar Usuario</h2>
+                        <form id="deleteForm">
+                            <div class="form-group">
+                                <label for="deleteId">ID del Usuario a Eliminar</label>
+                                <input type="text" class="form-control" id="deleteId" name="deleteId" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="deleteConfirm">Escriba "CONFIRMAR" para eliminar</label>
+                                <input type="text" class="form-control" id="deleteConfirm" name="deleteConfirm" required>
+                            </div>
+                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar Usuario</button>
+                        </form>
+                        <div id="deleteResult"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Sistema de pestañas
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    
+                    // Remover clase active de todos los botones y paneles
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+                    
+                    // Agregar clase active al botón y panel seleccionado
+                    button.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Simular datos para el dashboard
+            document.getElementById('userCount').textContent = '';
+            
+            // Aquí iría la inicialización de los gráficos
+            // initializeCharts();
+        });
+    </script>
+</body>
+</html>

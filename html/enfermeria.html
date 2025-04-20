@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Enfermería</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <script src="../js/usuario.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/enfermeria.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- CSS de DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+    
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    
+    <!-- JS de DataTables -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #0284c7;  /* Azul más profesional (oscuro) */
+            --primary-dark: #075985;
+            --secondary: #10b981;  /* Verde salud */
+            --accent: #f472b6;    /* Rosa para acentos */
+            --light: #f0f9ff;     /* Fondo azul claro */
+            --danger: #ef4444; 
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: var(--dark);
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: 0;
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+            gap: 10px;
+        }
+        
+        nav ul li {
+            margin: 0;
+        }
+        
+        nav ul li a {
+            color: white !important;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: white !important;
+        }
+        
+        main {
+            flex-grow: 1;
+            padding: 30px;
+            text-align: center;
+            max-width: 98%;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        h2 {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-weight: 600;
+            font-size: 1.75rem;
+            position: relative;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        /* Estilos mejorados para la tabla */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 20px 0;
+        }
+        
+        #dataTable {
+            width: 100% !important;
+            border-collapse: collapse;
+        }
+        
+        #dataTable th, #dataTable td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            white-space: nowrap;
+        }
+        
+        #dataTable th {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+        }
+        
+        #dataTable tr:nth-child(even) {
+            background-color: #f0f9ff;
+        }
+        
+        #dataTable tr:hover {
+            background-color: #e0f2fe;
+        }
+        
+        /* Ajustes para DataTables */
+        .dataTables_wrapper {
+            width: 100% !important;
+            margin: 0 auto;
+        }
+        
+        .dataTables_scrollBody {
+            overflow-x: auto !important;
+        }
+        
+        /* Action buttons */
+        .btn-sm.delete-btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: 0;
+        }
+        
+        footer p {
+            margin: 0;
+            position: relative;
+            z-index: 1;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            main {
+                padding: 15px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            #dataTable th, #dataTable td {
+                padding: 8px 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <h1><i class="fas fa-brain"></i> Bienvenido/a, <span id="usernameDisplay"></span> Enfermero/a</h1>
+        <nav>
+            <ul class="nav justify-content-center">
+                <li><a href="../html/recom_enfermeria.html"><i class="fas fa-clipboard-list"></i> Hacer recomendación</a></li>
+                <li><a href="../index.html"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="container">
+            <h2><i class="fas fa-calendar-check"></i> Gestión de Citas</h2>
+            <p>Bienvenida al sistema de gestión de citas de enfermería. Aquí podrá administrar las citas de los estudiantes.</p>
+            
+            <div class="table-responsive">
+                <table id="dataTable" class="display nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-user"></i> Nombre y Apellidos</th>
+                            <th><i class="fas fa-envelope"></i> Correo</th>
+                            <th><i class="fas fa-venus-mars"></i> Género</th>
+                            <th><i class="fas fa-comment-medical"></i> Motivo</th>
+                            <th><i class="fas fa-calendar-day"></i> Fecha</th>
+                            <th><i class="fas fa-clock"></i> Hora</th>
+                            <th><i class="fas fa-building"></i> Sede</th>
+                            <th><i class="fas fa-id-card"></i> ID Usuario</th>
+                            <th><i class="fas fa-cogs"></i> Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos se llenarán dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Portal de Enfermería - Sistema de Gestión de Citas. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>

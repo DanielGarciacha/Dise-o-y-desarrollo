@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Estudiantil - Vanesa</title>
+    <script src="../js/usuario.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/estudiantes2.js"></script><!--Vanesa-->
+    <script src="../js/cerra_sesion.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6d28d9;  /* Morado (coherencia con psicología) */
+    --primary-dark: #5b21b6;
+    --secondary: #059669; /* Verde */
+    --accent: #f472b6;    /* Rosa */
+    --light: #faf5ff;     /* Fondo lila claro */
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #faf5ff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath fill-rule='evenodd' d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2zm0 4L64 0h2L40 26v-2zm0 4L68 0h2L40 30v-2zm0 4L72 0h2L40 34v-2zm0 4L76 0h2L40 38v-2zm0 4L80 0v2L42 40h-2zm4 0L80 4v2L46 40h-2zm4 0L80 8v2L50 40h-2zm4 0l28-28v2L54 40h-2zm4 0l24-24v2L58 40h-2zm4 0l20-20v2L62 40h-2zm4 0l16-16v2L66 40h-2zm4 0l12-12v2L70 40h-2zm4 0l8-8v2l-6 6h-2zm4 0l4-4v2l-2 2h-2z'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        nav ul li {
+            margin: 0 5px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        main {
+            flex-grow: 1;
+            padding: 30px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-weight: 600;
+            font-size: 1.75rem;
+            position: relative;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            background: white;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        table, th, td {
+            border: none;
+        }
+        
+        th, td {
+            padding: 16px;
+            text-align: left;
+        }
+        
+        th {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #faf8ff;
+        }
+        
+        tr:hover {
+            background-color: #f3eaff;
+            transition: background-color 0.3s;
+        }
+        
+        td {
+            border-bottom: 1px solid #ede9f8;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath fill-rule='evenodd' d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2zm0 4L64 0h2L40 26v-2zm0 4L68 0h2L40 30v-2zm0 4L72 0h2L40 34v-2zm0 4L76 0h2L40 38v-2zm0 4L80 0v2L42 40h-2zm4 0L80 4v2L46 40h-2zm4 0L80 8v2L50 40h-2zm4 0l28-28v2L54 40h-2zm4 0l24-24v2L58 40h-2zm4 0l20-20v2L62 40h-2zm4 0l16-16v2L66 40h-2zm4 0l12-12v2L70 40h-2zm4 0l8-8v2l-6 6h-2zm4 0l4-4v2l-2 2h-2z'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        footer p {
+            margin: 0;
+            position: relative;
+            z-index: 1;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            main {
+                padding: 15px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            th, td {
+                padding: 12px 8px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-user-graduate"></i> Bienvenida, <span id="usernameDisplay"></span> Vanesa Martinez</h1>
+        <nav>
+            <ul>
+                <li><a href="bienestar.html"><i class="fas fa-heart"></i> Bienestar</a></li>
+                <li><a href="../index.html" id="cerrarSesionBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                <li><a href="../html/recom_estudiante2.html"><i class="fas fa-clipboard-list"></i> Mis recomendaciones</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="container">
+            <h2>Portal Estudiantil</h2>
+            <p>Bienvenida a tu área personal. Aquí podrás gestionar tus citas y ver información relevante.</p>
+            <div class="table-container">
+                <table id="estudianteVM-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-user"></i> Nombre Completo</th>
+                            <th><i class="fas fa-id-card"></i> ID de Cita</th>
+                            <th><i class="fas fa-calendar-check"></i> Tipo de cita</th>
+                            <th><i class="fas fa-building"></i> Sede</th>
+                            <th><i class="fas fa-calendar-alt"></i> Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Filas de datos se cargarán aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Sistema de Gestión Estudiantil. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
