@@ -1,74 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const apiUrl = 'http://localhost:3000'; // Cambia esto según tu configuración
 
-    // Obtener la cantidad de usuarios y mostrar en la pestaña "Inicio"
-    function updateUserCount() {
-        axios.get(`${apiUrl}/getAll`)
-            .then(response => {
-                const count = response.data.length;
-                document.getElementById('userCount').textContent = count;
-            })
-            .catch(error => {
-                console.error('Error fetching user count:', error);
-                document.getElementById('userCount').textContent = '0';
-            });
-    }
-
-    // Obtener el total de citas y mostrar en la pestaña "Inicio"
-    function updateAppointmentCount() {
-        axios.get(`${apiUrl}/estadisticas_citas`)
-            .then(response => {
-                if (response.data && response.data.success) {
-                    const totalPsicologia = response.data.total_psicologia || 0;
-                    const totalEnfermeria = response.data.total_enfermeria || 0;
-                    const totalCitas = totalPsicologia + totalEnfermeria;
-                    document.getElementById('totalCitas').textContent = totalCitas;
-                    
-                    // Opcional: Mostrar desglose por tipo
-                    console.log('Citas de psicología:', totalPsicologia);
-                    console.log('Citas de enfermería:', totalEnfermeria);
-                } else {
-                    throw new Error('Estructura de datos inválida');
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching appointment stats:', error);
-                document.getElementById('totalCitas').textContent = '0';
-                showAlert('Error al cargar estadísticas de citas', 'error');
-            });
-    }
-
-    // Obtener la lista de usuarios y mostrar en la pestaña "Lista de Usuarios"
-    function loadUserList() {
-        axios.get(`${apiUrl}/getAll`)
-            .then(response => {
-                const tableBody = document.querySelector('#dataTable tbody');
-                tableBody.innerHTML = ''; // Limpiar el contenido previo
-                response.data.forEach(user => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${user.id}</td>
-                        <td>${user.nombre}</td>
-                        <td>${user.identificacion}</td>
-                        <td>${user.correo}</td>
-                        <td>${user.telefono}</td>
-                        <td>${user.username}</td>
-                        <td>${user.rol}</td>
-                        <td>
-                            <button class="btn btn-info btn-sm" onclick="editUser(${user.id})">Editar</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">Eliminar</button>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching user list:', error);
-                showAlert('Error al cargar la lista de usuarios', 'error');
-            });
-    }
-
-    // Función para mostrar notificaciones mejorada y más llamativa
+    // ✅ Función mejorada para mostrar alertas
     function showAlert(message, type) {
         // Determinar iconos y colores según el tipo de alerta
         let icon, backgroundColor, borderColor;
@@ -152,8 +85,85 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     }
 
-    // Agregar un nuevo usuario
-    document.getElementById('userForm').addEventListener('submit', function(event) {
+    // 🔄 Función optimizada para actualizar el contador de usuarios
+    function updateUserCount() {
+        axios.get(`${apiUrl}/getAll`)
+            .then(response => {
+                if (response.data && Array.isArray(response.data)) {
+                    const count = response.data.length;
+                    document.getElementById('userCount').textContent = count;
+                } else {
+                    throw new Error('Formato de datos inválido');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user count:', error);
+                document.getElementById('userCount').textContent = '0';
+                showAlert('Error al obtener el conteo de usuarios', 'error');
+            });
+    }
+
+    // 📅 Función mejorada para actualizar el contador de citas
+    function updateAppointmentCount() {
+        axios.get(`${apiUrl}/estadisticas_citas`)
+            .then(response => {
+                if (response.data && response.data.success) {
+                    const totalPsicologia = response.data.total_psicologia || 0;
+                    const totalEnfermeria = response.data.total_enfermeria || 0;
+                    const totalCitas = totalPsicologia + totalEnfermeria;
+                    document.getElementById('totalCitas').textContent = totalCitas;
+                } else {
+                    throw new Error(response.data.message || 'Estructura de datos inválida');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching appointment stats:', error);
+                document.getElementById('totalCitas').textContent = '0';
+                showAlert('Error al cargar estadísticas de citas: ' + error.message, 'error');
+            });
+    }
+
+    // 👥 Función mejorada para cargar la lista de usuarios
+    function loadUserList() {
+        axios.get(`${apiUrl}/getAll`)
+            .then(response => {
+                if (response.data && Array.isArray(response.data)) {
+                    const tableBody = document.querySelector('#dataTable tbody');
+                    if (!tableBody) {
+                        throw new Error('No se encontró el elemento de la tabla');
+                    }
+                    
+                    tableBody.innerHTML = '';
+                    
+                    response.data.forEach(user => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.nombre}</td>
+                            <td>${user.identificacion}</td>
+                            <td>${user.correo}</td>
+                            <td>${user.telefono}</td>
+                            <td>${user.username}</td>
+                            <td>${user.rol}</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" onclick="editUser(${user.id})">Editar</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">Eliminar</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    throw new Error('Formato de datos inválido');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user list:', error);
+                showAlert('Error al cargar la lista de usuarios: ' + error.message, 'error');
+            });
+    }
+
+    // ➕ Función mejorada para agregar un nuevo usuario
+    document.getElementById('userForm')?.addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
         const userData = {
@@ -166,21 +176,34 @@ document.addEventListener('DOMContentLoaded', function() {
             rol: formData.get('rol')
         };
         
+        // Validación básica de campos requeridos
+        if (!userData.nombre || !userData.identificacion || !userData.correo || !userData.rol) {
+            showAlert('Por favor complete todos los campos requeridos', 'warning');
+            return;
+        }
+        
         axios.post(`${apiUrl}/add_contact`, userData)
             .then(response => {
-                showAlert('Usuario agregado correctamente', 'success');
-                loadUserList();
-                updateUserCount();
-                event.target.reset();
+                if (response.data && response.data.success) {
+                    showAlert('Usuario agregado correctamente', 'success');
+                    loadUserList(); // Actualizar la tabla
+                    updateUserCount(); // Actualizar el contador
+                    event.target.reset(); // Limpiar el formulario
+                    
+                    // Opcional: Cambiar a la pestaña de lista de usuarios
+                    document.querySelector('[data-tab="userList"]')?.click();
+                } else {
+                    throw new Error(response.data.message || 'Error al agregar usuario');
+                }
             })
             .catch(error => {
                 console.error('Error adding user:', error);
-                showAlert('Error al agregar usuario', 'error');
+                showAlert('Error al agregar usuario: ' + error.message, 'error');
             });
     });
 
-    // Actualizar un usuario
-    document.getElementById('updateForm').addEventListener('submit', function(event) {
+    // ✏️ Función mejorada para actualizar un usuario
+    document.getElementById('updateForm')?.addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
         const userId = formData.get('id');
@@ -194,41 +217,58 @@ document.addEventListener('DOMContentLoaded', function() {
             rol: formData.get('rol')
         };
     
+        // Validación básica de campos requeridos
+        if (!userData.nombre || !userData.identificacion || !userData.correo || !userData.rol) {
+            showAlert('Por favor complete todos los campos requeridos', 'warning');
+            return;
+        }
+    
         axios.put(`${apiUrl}/update/${userId}`, userData)
             .then(response => {
-                showAlert('Usuario actualizado correctamente', 'success');
-                loadUserList();
-                // Redirigir a la lista de usuarios después de actualizar
-                document.querySelector('[data-tab="userList"]').click();
+                if (response.data && response.data.success) {
+                    showAlert('Usuario actualizado correctamente', 'success');
+                    loadUserList();
+                    document.querySelector('[data-tab="userList"]')?.click();
+                } else {
+                    throw new Error(response.data.message || 'Error al actualizar usuario');
+                }
             })
             .catch(error => {
                 console.error('Error updating user:', error);
-                showAlert('Error al actualizar usuario', 'error');
+                showAlert('Error al actualizar usuario: ' + error.message, 'error');
             });
     });
 
-    // Eliminar un usuario
+    // 🗑️ Función para eliminar un usuario
     window.deleteUser = function(userId) {
-        if (!confirm('¿Estás seguro de eliminar este usuario?')) return;
+        if (!confirm('¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.')) {
+            return;
+        }
         
         axios.delete(`${apiUrl}/delete/${userId}`)
             .then(response => {
-                showAlert('Usuario eliminado correctamente', 'success');
-                loadUserList();
-                updateUserCount();
+                if (response.data && response.data.success) {
+                    showAlert('Usuario eliminado correctamente', 'success');
+                    loadUserList();
+                    updateUserCount();
+                } else {
+                    throw new Error(response.data.message || 'Error al eliminar usuario');
+                }
             })
             .catch(error => {
                 console.error('Error deleting user:', error);
-                showAlert('Error al eliminar usuario', 'error');
+                showAlert('Error al eliminar usuario: ' + error.message, 'error');
             });
     };
 
-    // Editar un usuario - Mejorado para activar la pestaña de edición
+    // ✏️ Función mejorada para editar un usuario
     window.editUser = function(userId) {
         axios.get(`${apiUrl}/getAllById/${userId}`)
             .then(response => {
-                if (response.data.length > 0) {
+                if (response.data && response.data.length > 0) {
                     const user = response.data[0];
+                    
+                    // Rellenar el formulario de actualización
                     document.getElementById('updateId').value = user.id;
                     document.getElementById('updateNombre').value = user.nombre;
                     document.getElementById('updateIdentificacion').value = user.identificacion;
@@ -241,34 +281,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Activar la pestaña de actualización
                     const updateTab = document.querySelector('[data-tab="updateUser"]');
                     if (updateTab) {
-                        // Primero simulamos un clic en la pestaña
                         updateTab.click();
                         
-                        // Luego nos aseguramos de que el elemento esté visible
                         const updateSection = document.getElementById('updateUser');
                         if (updateSection) {
-                            // Hacer visible la sección
                             updateSection.style.display = 'block';
                             
-                            // Marcar la pestaña como activa
                             document.querySelectorAll('.nav-link').forEach(tab => {
                                 tab.classList.remove('active');
                             });
                             updateTab.classList.add('active');
                             
-                            // Desactivar otras secciones
                             document.querySelectorAll('.tab-pane').forEach(pane => {
                                 pane.style.display = 'none';
                             });
                             
-                            // Hacer scroll suave a la sección
                             updateSection.scrollIntoView({ behavior: 'smooth' });
                             
-                            // Destacar visualmente el formulario
                             const updateForm = document.getElementById('updateForm');
                             if (updateForm) {
                                 updateForm.style.animation = 'highlight 1.5s ease-in-out';
-                                // Añadir estilo de animación
                                 const styleElement = document.createElement('style');
                                 styleElement.textContent = `
                                     @keyframes highlight {
@@ -279,7 +311,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 `;
                                 document.head.appendChild(styleElement);
                                 
-                                // Eliminar el estilo después de la animación
                                 setTimeout(() => {
                                     styleElement.remove();
                                     updateForm.style.animation = '';
@@ -289,46 +320,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     
                     showAlert(`Editando usuario: ${user.nombre}`, 'info');
+                } else {
+                    throw new Error('No se encontraron datos del usuario');
                 }
             })
             .catch(error => {
                 console.error('Error fetching user details:', error);
-                showAlert('Error al cargar datos del usuario', 'error');
+                showAlert('Error al cargar datos del usuario: ' + error.message, 'error');
             });
     }
 
-    // Inicializar la página
-    updateUserCount();
-    updateAppointmentCount();
-    loadUserList();
-
-    // Actualizar cada 5 minutos (opcional)
-    setInterval(() => {
-        updateUserCount();
-        updateAppointmentCount();
-    }, 300000);
-});
-
-// Unificar la funcionalidad de descarga en una sola función
-document.addEventListener('DOMContentLoaded', function () {
-    const apiUrl = 'http://localhost:3000';
-
-    // ✅ Alerta visual destacada tipo toast mejorada
+    // 📥 Función mejorada para mostrar alertas de descarga
     function showDownloadAlert(mensaje, tipo = 'success') {
-        // Determinar iconos según el tipo
         let icon;
         switch(tipo) {
-            case 'success':
-                icon = '📥';
-                break;
-            case 'warning':
-                icon = '⚠️';
-                break;
-            case 'error':
-                icon = '❌';
-                break;
-            default:
-                icon = 'ℹ️';
+            case 'success': icon = '📥'; break;
+            case 'warning': icon = '⚠️'; break;
+            case 'error': icon = '❌'; break;
+            default: icon = 'ℹ️';
         }
         
         const alertDiv = document.createElement('div');
@@ -348,19 +357,16 @@ document.addEventListener('DOMContentLoaded', function () {
         alertDiv.style.transform = 'translateY(-20px)';
         alertDiv.style.width = '350px';
         alertDiv.style.border = '2px solid rgba(255, 255, 255, 0.3)';
-        alertDiv.style.backdropFilter = 'blur(5px)';
         alertDiv.style.fontSize = '16px';
         alertDiv.style.textAlign = 'center';
         
         document.body.appendChild(alertDiv);
         
-        // Aplicar transición para que aparezca
         setTimeout(() => {
             alertDiv.style.opacity = '1';
             alertDiv.style.transform = 'translateY(0)';
         }, 10);
         
-        // Agregar un efecto de pulso
         const pulseAnimation = document.createElement('style');
         pulseAnimation.textContent = `
             @keyframes pulse {
@@ -382,23 +388,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 4000);
     }
 
-    // 📥 Botón para reporte de citas
-    const btnDescargarCitas = document.getElementById("downloadCitasBtn");
-    if (btnDescargarCitas) {
-        btnDescargarCitas.addEventListener("click", function (e) {
-            e.preventDefault();
-            showDownloadAlert("Descargando reporte de todas las citas...");
-            window.location.href = `${apiUrl}/exportar_reporte_citas`;
-        });
+    // 📥 Configurar botones de descarga
+    document.getElementById('downloadCitasBtn')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        showDownloadAlert('Descargando reporte de todas las citas...');
+        window.location.href = `${apiUrl}/exportar_reporte_citas`;
+    });
+
+    document.getElementById('downloadRecsBtn')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        showDownloadAlert('Descargando reporte de recomendaciones...');
+        window.location.href = `${apiUrl}/exportar_reporte_recomendaciones`;
+    });
+
+    // 🚀 Inicializar la aplicación
+    function initializeApp() {
+        updateUserCount();
+        updateAppointmentCount();
+        loadUserList();
+        
+        // Actualizar cada 5 minutos (opcional)
+        setInterval(() => {
+            updateUserCount();
+            updateAppointmentCount();
+        }, 300000);
     }
 
-    // 📥 Botón para reporte de recomendaciones
-    const btnDescargarRecs = document.getElementById("downloadRecsBtn");
-    if (btnDescargarRecs) {
-        btnDescargarRecs.addEventListener("click", function (e) {
-            e.preventDefault();
-            showDownloadAlert("Descargando reporte de recomendaciones...");
-            window.location.href = `${apiUrl}/exportar_reporte_recomendaciones`;
-        });
-    }
+    initializeApp();
 });
