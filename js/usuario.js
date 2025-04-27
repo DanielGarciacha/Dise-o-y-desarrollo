@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const roleLower = role.toLowerCase().trim();
         const roleMap = {
             'admin': 'admin',
+            'admin2': 'admin',
             'administrador': 'admin',
             'enfermero': 'enfermeria',
             'enfermera': 'enfermeria',
@@ -107,6 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const normalizedRole = normalizeRole(role);
         const redirectPaths = {
             'admin': 'html/admin.html',
+            'admin2': 'html/admin.html',
             'enfermeria': 'html/enfermeria.html',
             'estudiante': 'html/estudiantes.html',
             'estudiante2': 'html/estudiantes2.html',
