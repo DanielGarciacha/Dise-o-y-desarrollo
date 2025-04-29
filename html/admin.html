@@ -475,7 +475,6 @@
                 <button class="tab-button" data-tab="userList"><i class="fas fa-users"></i> Usuarios</button>
                 <button class="tab-button" data-tab="addUser"><i class="fas fa-user-plus"></i> Agregar</button>
                 <button class="tab-button" data-tab="updateUser"><i class="fas fa-user-edit"></i> Actualizar</button>
-                <button class="tab-button" data-tab="deleteUser"><i class="fas fa-user-minus"></i> Eliminar</button>
             </div>
 
             <div class="tab-content">
@@ -613,26 +612,6 @@
                         <div id="updateResult"></div>
                     </div>
                 </div>
-
-                <!-- Pestaña de Eliminar Usuario -->
-                <div class="tab-pane" id="deleteUser">
-                    <div class="form-container">
-                        <h2><i class="fas fa-user-minus"></i> Eliminar Usuario</h2>
-                        <form id="deleteForm">
-                            <div class="form-group">
-                                <label for="deleteId">ID del Usuario a Eliminar</label>
-                                <input type="text" class="form-control" id="deleteId" name="deleteId" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="deleteConfirm">Escriba "CONFIRMAR" para eliminar</label>
-                                <input type="text" class="form-control" id="deleteConfirm" name="deleteConfirm" required>
-                            </div>
-                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar Usuario</button>
-                        </form>
-                        <div id="deleteResult"></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
 
